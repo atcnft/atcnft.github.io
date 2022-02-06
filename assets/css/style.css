@@ -91,3 +91,7 @@ img,
 video {
   opacity: 0.6;
 }
+
+details p, .details-table {
+  font-size: smaller;
+}
