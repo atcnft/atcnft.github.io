@@ -28,6 +28,8 @@ const fetchAtTypeAddress = (text, nocheck) => {
 		return false;
 
 	blackfrostGetAddress(policyAlias, assetAlias);
+
+	return true;
 }
 
 const fetchHashTypeAddress = (text, nocheck) => {
@@ -44,6 +46,8 @@ const fetchHashTypeAddress = (text, nocheck) => {
 		return false;
 
 	blackfrostGetAddress(policyAlias, assetAlias);
+
+	return true;
 }
 
 const isAtCnft = (text) => {
