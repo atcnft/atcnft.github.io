@@ -21,6 +21,32 @@ nav a.current {
   margin: 2rem 0;
 }
 
+.address-preview {
+  text-align: center;
+  background: var(--accent-bg);
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.address-chunk {
+  text-overflow: clip;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 30%;
+  display: inline-block;
+}
+
+.address-middle {
+  max-width: 100%;
+}
+
+.trim-left {
+  direction: rtl;
+  text-align: left;
+}
+
 .medium {
   font-size: 1.4rem;
 }
@@ -41,6 +67,25 @@ nav a.current {
 
 .button:hover,
 .button:focus {
+  filter: brightness(1.4);
+  cursor: pointer;
+}
+
+.scan-form {
+  text-align: center;
+  background-color: #2b2b2b;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.scan-button {
+  border: none;
+  background-color: #8cf062;
+  color: #212121 !important;
+}
+
+.scan-button:hover,
+.scan-button:focus {
   filter: brightness(1.4);
   cursor: pointer;
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>atcnft.io</title>
+    <meta name="description" content="A simple yet revolutionary Cardano NFT protocol that adds utility to any nft policy by providing a way to identify a NFT holding wallet">
+    <link rel="stylesheet" href="./assets/css/simple.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- <script type="text/javascript" src="./assets/js/utf8.js"></script> -->
+    <script type="text/javascript" src="./assets/js/atcnft.js"></script>
+    <link rel="icon" href="./assets/images/favicon.png">
+</head>
+<body>
+  <header>
+    <br/>
+    <img src="./assets/images/logo-transparent.png" alt="atcnft.io logo" class="logo">
+    <p>Your NFT is your wallet address!</p>
+    <nav>
+      <!-- <a target="_blank" href="">Discord</svg></a> -->
+      <a target="_blank" href="mailto:support@atcnft.io?subject=Contact - ">Contact us</a>
+      <a target="_blank" href="https://github.com/atcnft">GitHub</a>
+      <a target="_blank" href="https://twitter.com/atcnft">Twitter</svg></a>
+      <a class="scan-button" href="./index.html">Home »</svg></a>
+    </nav>
+  </header>
+
+  <main>
+    <form class="scan-form" onkeydown="return event.key != 'Enter';">
+      <p>
+      <label>Search @CNFT</label><br>
+      <input id="txt_at_cnft" name="at_cnft" placeholder="NFT@Collection or Collection#Nft" type="text">
+      </p>
+
+      <button type="button" onclick="getAddress(document.getElementById('txt_at_cnft').value)">GO!</button>
+    </form>
+
+    <br/>
+
+    <p id="pAddress" class="address-preview" style="display: none;">
+      <span id="spanAddressLeft" class="address-chunk"></span><span id="spanAddressMiddle" class="address-chunk address-middle"></span><span id="spanAddressRight" class="address-chunk trim-left"></span>
+      
+    </p>
+
+    <code class="language-plaintext highlighter-rouge">
+      Important message to any nft owner:<br/>
+      <strong>Always verify the address that you will send it your assets!</strong>  
+    </code>
+  </main>
+
+  <footer>
+    <p>POLICY ID: </p>
+    <p>@CNFT © 2022</p>
+  </footer>
+</body>
+</html>
