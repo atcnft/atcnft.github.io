@@ -78,14 +78,13 @@ nav a.current {
   padding: 10px;
 }
 
-.scan-button {
-  border: none;
-  background-color: #8cf062;
-  color: #212121 !important;
+.focus-nav-button {
+  color: #8cf062 !important;
+  border-color: #8cf062 !important;
 }
 
-.scan-button:hover,
-.scan-button:focus {
+.focus-nav-button:hover,
+.focus-nav-button:focus {
   filter: brightness(1.4);
   cursor: pointer;
 }
