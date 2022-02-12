@@ -139,3 +139,11 @@ video {
 details p, .details-table {
   font-size: smaller;
 }
+
+.nft-preview {
+  opacity: 1;
+  object-fit: contain; 
+  margin: 0px auto;
+  padding: 20px;
+  display: block;
+}

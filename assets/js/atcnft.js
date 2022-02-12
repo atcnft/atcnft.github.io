@@ -1,15 +1,27 @@
+let blockfrostOpts = {
+	  method: 'GET',      
+	  headers: {
+	  	project_id: 'mainnetffL7w6r3aVtwn4CajbmoyY7tSTMGOsWJ'
+	  }
+	};
+
+let blockfrostUrl = 'https://cardano-mainnet.blockfrost.io/api/v0';
+
+let atcnftPolicyId = 'fe23eed404f37462181a236a400a13243c1a0a97c78648e85d0819ed';
+
 const getAddress = (text) => {
-	display("","Loading...","");
+	hidePreview();
+	showText("","Loading...","");
 
 	if(!text) {
-		display("","Input is required!","");
+		showText("","Input is required!","");
 		return;
 	}
 
 	let address = fetchAtTypeAddress(text) || fetchHashTypeAddress(text);
 
 	if(address === false) {
-		display("","Input is invalid!","");
+		showText("","Input is invalid!","");
 	}
 }
 
@@ -76,53 +88,85 @@ const string2Hex = (text) => {
 
 const blackfrostGetAddress = (policyAlias, assetAlias) => {
 	// Get cnft record from blockfrost
-	let blockfrostUrl = 'https://cardano-testnet.blockfrost.io/api/v0';
-
-	let atcnftPolicyId = '047d8a71dd928fdc2720fb0883be79b328785f6b0b2e3f830c8e10e6';
-
 	let atcnftAssetId = atcnftPolicyId + string2Hex(policyAlias); // TODO: Convert to utf8
 
-	var opts = {
-	  method: 'GET',      
-	  headers: {
-	  	project_id: 'testnet7FHA3YpffrzpTXy9Y5G2crnSF888u0VE'
-	  }
-	};
+	blockfrostGet(blockfrostUrl + "/assets/" + atcnftAssetId, handleGetCnftAssetInfoResponse, assetAlias);
+}
 
-	fetch(blockfrostUrl + "/assets/" + atcnftAssetId, opts).then(function (response) {
+const blockfrostGet = (url, handler, context) => {
+	fetch(url, blockfrostOpts).then(function (response) {
 	  return response.json();
 	})
 	.then(function (body) {
-		if(!body || body.error) {
-			document.getElementById('spanAddressMiddle').textContent = "The specified collection is not registered!";
-			return;
-		}
-
-		let assetName = body.onchain_metadata.prepend + assetAlias + body.onchain_metadata.append;
-
-		let assetId = body.onchain_metadata.referenceId + string2Hex(assetName); // TODO: Convert to utf8
-
-		fetch(blockfrostUrl + "/assets/" + assetId + "/addresses", opts).then(function (response) {
-		  return response.json();
-		})
-		.then(function (body) {
-			if(!body || body.error) {
-				document.getElementById('spanAddressMiddle').textContent = "The specified NFT was not found!";
-				return;
-			}
-
-			let address = body[0].address;
-
-			display(address.substring(0, 10), 
-				"...",
-				address.substring(address.length - 10, address.length));
-		});
+		handler(body, context);
 	});
 }
 
-const display = (left, mid, right) => {
+const handleGetCnftAssetInfoResponse = (body, assetAlias) => {
+	if(!body || body.error) { // TODO: Handle various error codes
+		showText("", "The specified collection is not registered!", "");
+		return;
+	}
+
+	let assetName = body.onchain_metadata.prepend +  assetAlias + body.onchain_metadata.append;
+
+	let assetId = body.onchain_metadata.referenceId + string2Hex(assetName); // TODO: Convert to utf8
+
+	blockfrostGet(blockfrostUrl + "/assets/" + assetId + "/addresses",
+		handleGetAssetAddressResponse, assetId);
+}
+
+const handleGetAssetAddressResponse = (body, assetId) => {
+	if(!body || body.error) {
+		showText("", "The specified NFT was not found!", "");
+		return;
+	}
+
+	let address = body[0].address;
+
+	showText(address.substring(0, 10), 
+		"...",
+		address.substring(address.length - 10, address.length));
+
+	blockfrostGet(blockfrostUrl + "/assets/" + assetId, handleGetAssetInfo);
+}
+
+const handleGetAssetInfo = (body) => {
+	if(!body || body.error) {
+		return;
+	}
+
+	let imgSrc = body.onchain_metadata.image;
+	
+	if(imgSrc.startsWith("ipfs://ipfs/"))
+		imgSrc = imgSrc.replace("ipfs://ipfs/", "https://ipfs.io/ipfs/");
+	else if(imgSrc.startsWith("ipfs://"))
+		imgSrc = imgSrc.replace("ipfs://", "https://ipfs.io/ipfs/");
+
+	document.getElementById("nftPreview").src = imgSrc;
+	showPreview();
+}
+
+const showText = (left, mid, right) => {
 	document.getElementById("pAddress").style.display = "block";
 	document.getElementById('spanAddressLeft').textContent = left;
 	document.getElementById('spanAddressMiddle').textContent = mid;
 	document.getElementById('spanAddressRight').textContent = right;
 }
+
+const showPreview = () => {
+	document.getElementById("nftPreview").style.display = "block";
+}
+
+const hidePreview = () => {
+	document.getElementById("nftPreview").style.display = "none";
+}
+
+const checkParams = () => {
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const params = Object.fromEntries(urlSearchParams.entries());
+
+	console.log(params);
+}
+
+checkParams();
